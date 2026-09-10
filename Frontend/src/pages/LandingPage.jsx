@@ -254,7 +254,7 @@ export const LandingPage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: MapPin, title: 'GIS Risk Map', desc: 'Interactive map with OSM, satellite, OpenTopo elevation, and Sentinel-2 style heatmap toggles.' },
+              { icon: MapPin, title: 'GIS Risk Map', desc: 'Interactive map with OSM, satellite, OpenTopo elevation, and NASA GIBS daily earth observation overlays.' },
               { icon: Cpu, title: 'AI Risk Prediction', desc: 'Simulate risk scores from rainfall, slope, soil moisture, and vegetation inputs with clear explanations.' },
               { icon: BellRing, title: 'Alert Console', desc: 'Track active warnings, acknowledge/resolve events, and simulate emergency SMS broadcasts.' },
               { icon: BarChart3, title: 'Analytics', desc: 'State-wise risk distribution, rainfall trends, and historical monsoon incident patterns.' },

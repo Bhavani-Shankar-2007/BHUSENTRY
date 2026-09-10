@@ -8,12 +8,15 @@ class GeminiAIClient:
     """Client for Google Gemini API (official AI copilot for explanation & officer assistance)"""
 
     def __init__(self):
-        # We tested and verified gemini-flash-latest works with the user's API key
-        self.models_to_try = [
+        # Prioritize user configured model (gemini-3.8-flash)
+        primary_model = getattr(settings, "GEMINI_MODEL", "gemini-3.8-flash") or "gemini-3.8-flash"
+        all_models = [
+            primary_model,
+            "gemini-3.8-flash",
+            "gemini-3.5-flash",
             "gemini-flash-latest",
-            "gemini-2.5-flash-lite",
-            "gemini-3.8-flash"
         ]
+        self.models_to_try = list(dict.fromkeys(all_models))
 
     async def generate_explanation(self, prompt: str, context: Optional[Dict[str, Any]] = None) -> str:
         if not settings.GEMINI_API_KEY:

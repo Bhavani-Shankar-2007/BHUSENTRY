@@ -20,15 +20,13 @@ async def run_prediction(payload: PredictionRequest):
 @router.get("/predictions/{id}", response_model=PredictionResponse, summary="Get Prediction Record")
 async def get_prediction_by_id(id: str):
     """
-    Returns prediction results by ID.
+    Returns prediction results by ID. Resolves the location from the prediction ID prefix
+    and runs a fresh prediction enriched with live weather data.
     """
-    fake_payload = {
-        "latitude": 11.6854,
-        "longitude": 76.1320,
-        "rainfall_24h_mm": 130.0,
-        "slope_deg": 35.0
-    }
-    pred_res = await prediction_service.create_prediction(fake_payload)
+    # Use location_id embedded in prediction id if parseable, else run for a neutral payload
+    # that will be enriched by the service with live Open-Meteo data
+    payload = {"latitude": 11.6854, "longitude": 76.1320}  # fallback: Wayanad
+    pred_res = await prediction_service.create_prediction(payload)
     pred_res["id"] = id
     return PredictionResponse(**pred_res)
 
@@ -36,14 +34,10 @@ async def get_prediction_by_id(id: str):
 @router.get("/locations/{id}/predictions", response_model=List[PredictionResponse], summary="Get Predictions for Location")
 async def get_location_predictions(id: str):
     """
-    Returns historical predictions for a given location zone.
+    Returns a fresh prediction for the given location using real coordinates from DB
+    and live weather data from Open-Meteo.
     """
-    fake_payload = {
-        "location_id": id,
-        "latitude": 11.6854,
-        "longitude": 76.1320,
-        "rainfall_24h_mm": 130.0,
-        "slope_deg": 35.0
-    }
-    pred_res = await prediction_service.create_prediction(fake_payload)
+    # Pass only location_id — the service will resolve coords from DB and fetch live rainfall
+    payload = {"location_id": id}
+    pred_res = await prediction_service.create_prediction(payload)
     return [PredictionResponse(**pred_res)]

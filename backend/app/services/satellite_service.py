@@ -16,12 +16,14 @@ class SatelliteService:
             "location_id": location_id,
             "latitude": lat,
             "longitude": lon,
-            "satellite_source": indices.get("satellite_source", "NASA GIBS / ESRI World Imagery"),
+            "satellite_source": indices.get("satellite_source", "NASA GIBS (EOSDIS) / ESRI World Imagery"),
             "ndvi": indices.get("ndvi", 0.52),
             "ndwi": indices.get("ndwi", 0.31),
             "soil_moisture_index": indices.get("soil_moisture_index", 0.68),
             "surface_displacement_mm": indices.get("surface_displacement_mm", 12.4),
             "image_url": indices.get("image_url"),
+            "nasa_gibs_url": indices.get("nasa_gibs_url"),
+            "nasa_precipitation_url": indices.get("nasa_precipitation_url"),
             "captured_at": datetime.now(timezone.utc)
         }
 

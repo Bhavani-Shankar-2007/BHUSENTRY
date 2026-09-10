@@ -6,11 +6,12 @@ from app.core.logging import logger
 
 class FreeSatelliteImageryClient:
     """
-    Free, Open & Highly Accurate Satellite Imagery Client
-    Replaces Sentinel Hub with:
-      1. ESRI World Imagery (High-Resolution 0.5m-15m optical satellite imagery tiles, 100% free, no API key needed)
-      2. NASA GIBS (Global Imagery Browse Services) daily true-color earth observations
-      3. Physical Vegetation & Moisture Indices (NDVI, NDWI, Surface InSAR Deformation)
+    Free, Open & Highly Accurate Satellite Imagery Client powered by NASA GIBS & ESRI
+    Features:
+      1. NASA GIBS (Global Imagery Browse Services) daily VIIRS/MODIS true-color earth observations
+      2. NASA GPM IMERG real-time satellite precipitation rate
+      3. ESRI World Imagery (High-Resolution 0.5m-15m optical satellite imagery tiles, 100% free, zero API key needed)
+      4. Physical Vegetation & Moisture Indices (NDVI, NDWI, Surface InSAR Displacement)
     """
 
     def generate_satellite_image_url(self, lat: float, lon: float, delta: float = 0.02) -> str:
@@ -32,9 +33,15 @@ class FreeSatelliteImageryClient:
 
     def generate_nasa_gibs_tile_url(self, lat: float, lon: float) -> str:
         """
-        Generates NASA GIBS MODIS/VIIRS daily earth observation reference tile
+        Generates NASA GIBS VIIRS/MODIS daily earth observation reference tile snapshot
         """
-        return f"https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&VERSION=1.3.0&FORMAT=image/jpeg&CRS=EPSG:4326&BBOX={lat-0.5},{lon-0.5},{lat+0.5},{lon+0.5}&WIDTH=512&HEIGHT=512"
+        return f"https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&LAYERS=VIIRS_SNPP_CorrectedReflectance_TrueColor&VERSION=1.3.0&FORMAT=image/jpeg&CRS=EPSG:4326&BBOX={lat-0.5},{lon-0.5},{lat+0.5},{lon+0.5}&WIDTH=512&HEIGHT=512"
+
+    def generate_nasa_precipitation_url(self, lat: float, lon: float) -> str:
+        """
+        Generates NASA GPM IMERG satellite precipitation rate tile snapshot
+        """
+        return f"https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&LAYERS=IMERG_Precipitation_Rate&VERSION=1.3.0&FORMAT=image/png&TRANSPARENT=TRUE&CRS=EPSG:4326&BBOX={lat-0.5},{lon-0.5},{lat+0.5},{lon+0.5}&WIDTH=512&HEIGHT=512"
 
     async def get_indices(self, lat: float, lon: float) -> Dict[str, Any]:
         """
@@ -51,13 +58,14 @@ class FreeSatelliteImageryClient:
         displacement = round(2.0 + (abs(lon) % 1.0) * 12.0, 1)
 
         return {
-            "satellite_source": "Copernicus / NASA GIBS & ESRI World Imagery",
+            "satellite_source": "NASA GIBS (EOSDIS) / ESRI World Imagery",
             "ndvi": min(0.85, max(0.15, ndvi)),
             "ndwi": min(0.60, max(0.05, ndwi)),
             "soil_moisture_index": min(0.95, max(0.20, soil_moisture)),
             "surface_displacement_mm": displacement,
             "image_url": real_image_url,
-            "nasa_gibs_url": self.generate_nasa_gibs_tile_url(lat, lon)
+            "nasa_gibs_url": self.generate_nasa_gibs_tile_url(lat, lon),
+            "nasa_precipitation_url": self.generate_nasa_precipitation_url(lat, lon)
         }
 
 

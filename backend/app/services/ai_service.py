@@ -9,8 +9,15 @@ class AIService:
 
     async def chat(self, prompt: str, conversation_id: str = None) -> Dict[str, Any]:
         conv_id = conversation_id or f"conv-{uuid.uuid4().hex[:8]}"
-        response_text = await grok_client.chat(prompt)
-        provider = "xAI Grok" if (settings.GROK_API_KEY or settings.XAI_API_KEY) else "Google Gemini"
+        if settings.GEMINI_API_KEY:
+            response_text = await gemini_client.generate_explanation(prompt)
+            provider = f"Google Gemini ({settings.GEMINI_MODEL})"
+        elif settings.GROK_API_KEY or settings.XAI_API_KEY:
+            response_text = await grok_client.chat(prompt)
+            provider = "xAI Grok"
+        else:
+            response_text = await gemini_client.generate_explanation(prompt)
+            provider = "Google Gemini"
 
         return {
             "conversation_id": conv_id,
@@ -28,7 +35,10 @@ class AIService:
             f"Provide an expert geotechnical breakdown for prediction ID '{prediction_id}'. "
             "Explain how precipitation, slope steepness, and soil saturation drive this risk score."
         )
-        explanation_text = await grok_client.chat(explanation_prompt)
+        if settings.GEMINI_API_KEY:
+            explanation_text = await gemini_client.generate_explanation(explanation_prompt)
+        else:
+            explanation_text = await grok_client.chat(explanation_prompt)
 
         return {
             "prediction_id": prediction_id,

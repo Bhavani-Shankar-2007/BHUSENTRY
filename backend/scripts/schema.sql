@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS public.terrain_data (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. Satellite Observations (Sentinel Hub)
+-- 7. Satellite Observations (NASA GIBS / Earth Observation)
 CREATE TABLE IF NOT EXISTS public.satellite_observations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     location_id TEXT REFERENCES public.locations(id) ON DELETE CASCADE,

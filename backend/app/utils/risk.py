@@ -1,19 +1,22 @@
 def classify_risk_level(score: float) -> str:
     """
-    Classifies risk score (0.00 - 1.00) into standardized risk levels:
-    0.00 – 0.29 → LOW
-    0.30 – 0.59 → MODERATE
-    0.60 – 0.79 → HIGH
-    0.80 – 1.00 → VERY HIGH
+    Classifies risk score (0.00 - 1.00) into standardized NDMA risk levels.
+    Thresholds aligned with GSI Landslide Hazard Evaluation Factor (LHEF) scoring
+    and IMD rainfall classification for landslide triggering:
+
+    0.00 – 0.24 → LOW       (rainfall < 64.5mm/day, stable slope)
+    0.25 – 0.54 → MODERATE  (rainfall 64.5–115.5mm, moderate slope)
+    0.55 – 0.79 → HIGH      (rainfall 115.5–204.5mm OR steep slope + wet soil)
+    0.80 – 1.00 → VERY HIGH (rainfall > 204.5mm AND steep slope; IMD Extremely Heavy)
     """
     if score is None:
         return "LOW"
     score = float(score)
     if score >= 0.80:
         return "VERY HIGH"
-    elif score >= 0.60:
+    elif score >= 0.55:
         return "HIGH"
-    elif score >= 0.30:
+    elif score >= 0.25:
         return "MODERATE"
     else:
         return "LOW"

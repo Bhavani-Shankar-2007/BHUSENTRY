@@ -50,6 +50,7 @@ class Settings(BaseSettings):
     GROK_API_KEY: str = Field(default="", description="xAI Grok API Key")
     XAI_API_KEY: str = Field(default="", description="xAI API Key")
     GEMINI_API_KEY: str = Field(default="", description="Google Gemini API Key")
+    GEMINI_MODEL: str = Field(default="gemini-3.8-flash", description="Google Gemini Model")
 
     # Indian Emergency Notification Keys (Fast2SMS + Telegram Bot)
     FAST2SMS_API_KEY: str = Field(default="", description="Fast2SMS API Key for Indian +91 mobile alerts")

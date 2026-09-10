@@ -1,76 +1,86 @@
-# BHUSENTRY - FastAPI Landslide Early Warning System Backend
+# ⚙️ BHUSENTRY — Backend Service & Machine Learning Core
 
-Production-grade FastAPI + Supabase + Random Forest ML backend for the BHUSENTRY Landslide Early Warning & Risk Monitoring System.
-
-## Architecture Overview
-
-- **Framework**: FastAPI (Async, Pydantic v2, Dependency Injection)
-- **Database & Auth**: Supabase PostgreSQL + PostGIS & Supabase Auth JWT validation
-- **Machine Learning**: Scikit-Learn Random Forest Classifier model pre-warmed & persisted via `joblib`
-- **Integrations**:
-  - Live Weather & Precipitation: Open-Meteo API
-  - Satellite Vegetation & InSAR: Sentinel Hub API
-  - Terrain & DEM Elevation: OpenTopography API
-  - AI Risk Explanation: xAI Grok / Google Gemini API
-  - SMS Emergency Broadcasts: MSG91 API
+Production-grade FastAPI backend powering the **BHUSENTRY Landslide Early Warning & Risk Monitoring Platform**.
 
 ---
 
-## Developer Setup Guide
+## 🏛️ Core Architecture
+
+- **Web Framework**: FastAPI (Asynchronous endpoints, Pydantic v2 validation, standard dependency injection).
+- **Database & Auth**: Supabase (PostgreSQL with PostGIS extensions & Supabase Auth JWT security).
+- **Machine Learning & Physics Engine**:
+  - **Random Forest Classifier**: Scikit-Learn ensemble trained with physics-grounded synthetic geological samples and saved to `app/ml/model.joblib`.
+  - **Physics Formulation**: Calibrated geotechnical Mohr-Coulomb shear strength and GSI Landslide Hazard Evaluation Factor (LHEF) scoring.
+  - **Hybrid Inference**: Weighted 65% ML + 35% Geotechnical physics for robust out-of-distribution stability.
+- **External Data Connectors**:
+  - **Weather**: Open-Meteo REST API (real-time precipitation, 72h accumulation, soil moisture).
+  - **Satellite**: NASA GIBS (EOSDIS) WMS & ESRI World Imagery.
+  - **AI Copilot**: Google Gemini API with fallback rule-based advisor.
+
+---
+
+## 🚀 Getting Started
 
 ### 1. Requirements
+- Python 3.10 or higher
+- PowerShell / Bash
 
-- Python 3.10+
-- virtualenv
-
-### 2. Quickstart Execution
+### 2. Setup Virtual Environment & Install Dependencies
 
 ```bash
-# Navigate to backend directory
-cd backend
-
-# Create virtual environment
+# In the backend directory
 python -m venv venv
 
-# Activate virtual environment (Windows PowerShell)
+# Windows PowerShell:
 .\venv\Scripts\Activate.ps1
 
-# Install dependencies
+# Linux / MacOS:
+source venv/bin/activate
+
+# Install requirements
 pip install -r requirements.txt
-
-# Create local environment file
-cp .env.example .env
-
-# Run FastAPI Development Server
-uvicorn app.main:app --reload --port 8000
 ```
 
-Interactive OpenAPI documentation is available at:
-`http://127.0.0.1:8000/docs`
+### 3. Configure Environment Variables
+
+```bash
+copy .env.example .env
+```
+
+Edit `.env` to configure your Supabase URL/Key, Gemini API key, and other services.
+
+### 4. Run Server
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+- Swagger Interactive API Docs: `http://localhost:8000/docs`
+- ReDoc Docs: `http://localhost:8000/redoc`
 
 ---
 
-## Database Migration Instructions (Supabase)
+## 🔬 Machine Learning Pipeline
 
-1. Open your [Supabase Dashboard](https://supabase.com/dashboard).
-2. Go to **SQL Editor** -> **New Query**.
-3. Paste the contents of `backend/scripts/schema.sql`.
-4. Click **Run**.
+- **Training**: Run `python -c "from app.ml.model import get_or_create_model; get_or_create_model()"` to retrain the Random Forest model.
+- **Features**:
+  1. `rainfall_24h_mm`: 24-hour accumulated rainfall (mm) — primary trigger
+  2. `rainfall_72h_mm`: 72-hour antecedent rainfall (mm) — soil pre-saturation
+  3. `slope_deg`: Topographical slope gradient (degrees)
+  4. `elevation_m`: Station elevation above sea level (meters)
+  5. `soil_moisture`: Soil moisture content (normalized 0.0 – 1.0)
+  6. `ndvi`: Normalized Difference Vegetation Index (-1.0 to 1.0) — root cohesion
+  7. `pore_water_pressure_kpa`: Pore water pressure (kPa) — shear resistance reduction
+- **Risk Classification**:
+  - `0.00 – 0.24`: LOW
+  - `0.25 – 0.54`: MODERATE
+  - `0.55 – 0.79`: HIGH
+  - `0.80 – 1.00`: VERY HIGH
 
 ---
 
-## API Route Specifications
+## 🧪 Testing Predictor
 
-- `GET /api/v1/health` - Basic health check
-- `GET /api/v1/health/integrations` - External services status
-- `GET /api/v1/auth/me` - Authenticated user profile
-- `GET /api/v1/locations` - Monitored vulnerability zones
-- `POST /api/v1/predictions` - Run Random Forest ML risk inference
-- `GET /api/v1/alerts` - List active & historical risk warnings
-- `PUT /api/v1/alerts/{id}/acknowledge` - Officer alert acknowledgment
-- `GET /api/v1/weather/{location_id}` - Open-Meteo live weather data
-- `GET /api/v1/satellite/{location_id}` - Sentinel-2 satellite indices
-- `GET /api/v1/terrain/{location_id}` - DEM elevation and slope angle
-- `GET /api/v1/analytics/summary` - Executive risk analytics
-- `POST /api/v1/ai/chat` - Copilot chatbot for officers
-- `POST /api/v1/ai/explain/{prediction_id}` - AI factor breakdown
+```bash
+.\venv\Scripts\python.exe -c "from app.ml.predictor import predictor_engine; print(predictor_engine.predict({'rainfall_24h_mm': 180, 'slope_deg': 40, 'soil_moisture': 0.8}))"
+```

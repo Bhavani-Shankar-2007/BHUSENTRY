@@ -21,7 +21,7 @@ async def health_check():
 @router.get("/health/integrations", summary="External Services & DB Health Check")
 async def integrations_health_check():
     """
-    Checks connection statuses for Supabase DB, Open-Meteo, Sentinel Hub, and AI clients.
+    Checks connection statuses for Supabase DB, Open-Meteo, NASA GIBS Earth Observation, and AI clients.
     """
     sb_client = get_supabase_client()
     supabase_status = "connected" if sb_client else "mock_mode"

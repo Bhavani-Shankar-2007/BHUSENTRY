@@ -5,10 +5,10 @@ from app.services.satellite_service import satellite_service
 router = APIRouter(tags=["Satellite & Earth Observation"])
 
 
-@router.get("/satellite/{location_id}", response_model=SatelliteObservationResponse, summary="Get Satellite Earth Observations")
+@router.get("/satellite/{location_id}", response_model=SatelliteObservationResponse, summary="Get NASA GIBS Satellite Earth Observations")
 async def get_satellite(location_id: str):
     """
-    Returns Sentinel-2 / Sentinel-1 SAR vegetation indices (NDVI, NDWI) and InSAR ground deformation readings.
+    Returns NASA GIBS (EOSDIS) / ESRI Earth Observation readings, vegetation indices (NDVI, NDWI), and ground deformation.
     """
     res = await satellite_service.get_satellite_data(location_id)
     return SatelliteObservationResponse(**res)

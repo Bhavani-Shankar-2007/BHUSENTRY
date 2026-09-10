@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { RiskBadge } from '../common/RiskBadge';
-import { Droplets, Mountain, Compass, ArrowUpRight, Layers, Satellite, MountainSnow, Flame } from 'lucide-react';
+import { Droplets, Mountain, Compass, ArrowUpRight, Layers, Satellite, MountainSnow, Flame, CloudRain } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { MAP_LAYERS } from '../../services/mockData';
 
@@ -65,7 +65,8 @@ export const RiskMap = ({
   const defaultZoom = zoom || 7;
 
   const [activeBase, setActiveBase] = useState('osm');
-  const [showSentinel, setShowSentinel] = useState(false);
+  const [showGibsTrueColor, setShowGibsTrueColor] = useState(false);
+  const [showNasaRain, setShowNasaRain] = useState(false);
 
   const currentCenter = selectedLocation
     ? [selectedLocation.latitude, selectedLocation.longitude]
@@ -113,13 +114,23 @@ export const RiskMap = ({
             </button>
             <button
               type="button"
-              onClick={() => setShowSentinel((v) => !v)}
+              onClick={() => setShowGibsTrueColor((v) => !v)}
               className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                showSentinel ? 'bg-red-100 text-red-900' : 'text-slate-600 hover:bg-slate-50'
+                showGibsTrueColor ? 'bg-blue-100 text-blue-900 font-bold border border-blue-200' : 'text-slate-600 hover:bg-slate-50'
               }`}
-              title="Sentinel-2 Heatmap Overlay (Simulated)"
+              title="NASA GIBS Daily Earth Observation True-Color"
             >
-              <Flame className="w-3.5 h-3.5" /> Sentinel-2
+              <Satellite className="w-3.5 h-3.5 text-blue-600" /> NASA GIBS
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowNasaRain((v) => !v)}
+              className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                showNasaRain ? 'bg-indigo-100 text-indigo-900 font-bold border border-indigo-200' : 'text-slate-600 hover:bg-slate-50'
+              }`}
+              title="NASA GPM IMERG Real-Time Precipitation Rate"
+            >
+              <CloudRain className="w-3.5 h-3.5 text-indigo-600" /> NASA Rain
             </button>
           </div>
         </div>
@@ -140,12 +151,23 @@ export const RiskMap = ({
           url={baseLayer.url}
         />
 
-        {/* Simulated Sentinel-2 heatmap overlay */}
-        {showSentinel && (
+        {/* NASA GIBS Daily Earth Observation True-Color */}
+        {showGibsTrueColor && (
           <TileLayer
-            attribution={MAP_LAYERS.sentinel2.attribution}
-            url={MAP_LAYERS.sentinel2.url}
-            opacity={0.45}
+            attribution={MAP_LAYERS.nasaGibsTrueColor.attribution}
+            url={MAP_LAYERS.nasaGibsTrueColor.url}
+            maxNativeZoom={MAP_LAYERS.nasaGibsTrueColor.maxNativeZoom}
+            opacity={MAP_LAYERS.nasaGibsTrueColor.opacity || 0.85}
+          />
+        )}
+
+        {/* NASA GPM IMERG Precipitation Rate Overlay */}
+        {showNasaRain && (
+          <TileLayer
+            attribution={MAP_LAYERS.nasaGibsPrecipitation.attribution}
+            url={MAP_LAYERS.nasaGibsPrecipitation.url}
+            maxNativeZoom={MAP_LAYERS.nasaGibsPrecipitation.maxNativeZoom}
+            opacity={MAP_LAYERS.nasaGibsPrecipitation.opacity || 0.65}
           />
         )}
 
