@@ -1,11 +1,11 @@
 import { apiClient, USE_MOCK } from './api';
 
 /**
- * Weather Service - fetches live weather + xAI Grok meteorological intelligence
+ * Weather Service - fetches live weather + AI meteorological intelligence
  */
 export const weatherService = {
   /**
-   * Fetch weather data with Grok AI analysis for a location
+   * Fetch weather data with AI analysis for a location
    * @param {string} locationId
    */
   async getWeather(locationId) {
@@ -42,14 +42,14 @@ export const weatherService = {
           precipitation_severity: 'Severe Downpour',
           slope_impact: 'Cumulative antecedent rainfall exceeds critical saturation threshold; pore water pressure building in weathered overburden layers.',
           weather_advisory: 'Issue precautionary red alert to downstream settlements. Inspect culverts, restrict heavy vehicle movement on hill roads.',
-          source: 'xAI Grok (Fallback)'
+          source: 'AI (Fallback)'
         }
       }
     };
   },
 
   /**
-   * Fetch dedicated Grok meteorological intelligence for a location
+   * Fetch dedicated AI meteorological intelligence for a location
    * @param {string} locationId
    */
   async getGrokInsights(locationId) {
@@ -60,7 +60,7 @@ export const weatherService = {
           return { success: true, data: response.data };
         }
       } catch (err) {
-        console.warn('Grok insights API failed, using fallback:', err.message);
+        console.warn('AI insights API failed, using fallback:', err.message);
       }
     }
 
@@ -73,7 +73,7 @@ export const weatherService = {
           precipitation_severity: 'Severe Downpour',
           slope_impact: 'Saturated soil profile with reduced shear strength in upper 2m of weathered overburden.',
           weather_advisory: 'Maintain elevated telemetry monitoring; alert district emergency cells.',
-          source: 'xAI Grok (Fallback)'
+          source: 'AI (Fallback)'
         }
       }
     };

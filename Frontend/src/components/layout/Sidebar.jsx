@@ -12,24 +12,26 @@ import {
 } from 'lucide-react';
 import { useAlerts } from '../../context/AlertContext';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export const Sidebar = ({ isOpen, onClose }) => {
   const { activeAlertCount } = useAlerts();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const navItems = [
-    { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { label: 'Risk Map (GIS)', path: '/map', icon: Map, badge: 'GIS' },
-    { label: 'Monitored Locations', path: '/locations', icon: MapPin },
-    { label: 'AI Risk Prediction', path: '/predict', icon: Cpu, badge: 'AI' },
+    { label: t('dashboard'), path: '/dashboard', icon: LayoutDashboard },
+    { label: t('map'), path: '/map', icon: Map, badge: 'GIS' },
+    { label: t('locations'), path: '/locations', icon: MapPin },
+    { label: t('predict'), path: '/predict', icon: Cpu, badge: 'AI' },
     {
-      label: 'Alerts',
+      label: t('alerts'),
       path: '/alerts',
       icon: Bell,
       counter: activeAlertCount > 0 ? activeAlertCount : null,
       counterColor: 'bg-red-500'
     },
-    { label: 'Analytics', path: '/analytics', icon: BarChart3 },
+    { label: t('analytics'), path: '/analytics', icon: BarChart3 },
     ...(user?.role === 'ADMIN'
       ? [{ label: 'Admin & Users', path: '/admin', icon: Users }]
       : [])
@@ -45,12 +47,12 @@ export const Sidebar = ({ isOpen, onClose }) => {
       )}
 
       <aside
-        className={`fixed top-0 left-0 bottom-0 z-50 w-64 bg-white text-slate-700 flex flex-col border-r border-slate-200 shadow-sm transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 bottom-0 z-50 w-64 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 flex flex-col border-r border-slate-200 dark:border-slate-800 shadow-sm transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Brand Header */}
-        <div className="h-[72px] flex items-center justify-between px-4 border-b border-slate-200 bg-white">
+        <div className="h-[72px] flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
           <Link to="/" className="flex items-center gap-2.5 min-w-0">
             <img
               src="/bhusentry-logo.png"
@@ -58,10 +60,10 @@ export const Sidebar = ({ isOpen, onClose }) => {
               className="w-10 h-10 object-contain shrink-0"
             />
             <div className="min-w-0">
-              <div className="font-extrabold text-slate-900 text-sm tracking-tight truncate">
+              <div className="font-extrabold text-slate-900 dark:text-slate-100 text-sm tracking-tight truncate">
                 BHUSENTRY
               </div>
-              <p className="text-[10px] text-slate-500 font-medium truncate">
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate">
                 Landslide Early Warning
               </p>
             </div>
@@ -138,7 +140,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
         </nav>
 
         {/* User footer */}
-        <div className="p-4 border-t border-slate-200 bg-slate-50/80">
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80">
           <div className="flex items-center gap-3">
             {user?.avatar || user?.avatar_url ? (
               <img

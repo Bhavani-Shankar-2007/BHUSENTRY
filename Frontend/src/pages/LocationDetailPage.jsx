@@ -55,7 +55,7 @@ export const LocationDetailPage = () => {
     fetchLocation();
   }, [id]);
 
-  // Fetch Grok weather intelligence after location is loaded
+  // Fetch AI weather intelligence after location is loaded
   useEffect(() => {
     if (!location) return;
     const fetchWeather = async () => {
@@ -66,7 +66,7 @@ export const LocationDetailPage = () => {
           setGrokWeather(res.data);
         }
       } catch (err) {
-        console.warn('Grok weather fetch failed:', err);
+        console.warn('AI weather fetch failed:', err);
       } finally {
         setWeatherLoading(false);
       }
@@ -302,20 +302,20 @@ export const LocationDetailPage = () => {
             <RainfallTrendChart data={MOCK_RAINFALL_RISK_TREND} height={200} />
           </Card>
 
-          {/* Grok AI Weather Intelligence */}
+          {/* AI Weather Intelligence */}
           <Card
-            title="Grok AI Weather Intelligence"
-            subtitle={grokWeather ? `Live · ${grokWeather.grok_analysis?.source || 'xAI Grok'}` : 'Fetching live analysis…'}
+            title="AI Weather Intelligence"
+            subtitle={grokWeather ? `Live · ${grokWeather.grok_analysis?.source || 'AI'}` : 'Fetching live analysis…'}
             action={
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r from-slate-900 to-emerald-900 text-emerald-300 border border-emerald-800/40">
-                <Zap className="w-3 h-3" /> xAI Grok
+                <Zap className="w-3 h-3" /> AI Analysis
               </span>
             }
           >
             {weatherLoading ? (
               <div className="flex flex-col items-center justify-center py-8 gap-2">
                 <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
-                <span className="text-xs text-slate-400">Querying xAI Grok…</span>
+                <span className="text-xs text-slate-400">Querying AI…</span>
               </div>
             ) : grokWeather ? (
               <div className="space-y-3">
@@ -345,10 +345,10 @@ export const LocationDetailPage = () => {
                   </span>
                 </div>
 
-                {/* Grok Analysis Blocks */}
+                {/* AI Analysis Blocks */}
                 <div className="space-y-2 text-xs">
                   <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-100">
-                    <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block mb-1">Grok Summary</span>
+                    <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block mb-1">AI Summary</span>
                     <p className="text-slate-700 leading-relaxed">{grokWeather.grok_analysis?.summary}</p>
                   </div>
 
@@ -367,7 +367,7 @@ export const LocationDetailPage = () => {
               </div>
             ) : (
               <div className="p-5 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100">
-                Grok weather intelligence unavailable. Check API connection.
+                AI weather intelligence unavailable. Check API connection.
               </div>
             )}
           </Card>

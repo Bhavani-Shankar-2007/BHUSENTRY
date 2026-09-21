@@ -106,6 +106,12 @@ export const MOCK_SUBSCRIBERS = [
 ];
 
 /** Map layer definitions (tile URLs for toggle) */
+const getYesterdayString = () => {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return d.toISOString().split('T')[0];
+};
+
 export const MAP_LAYERS = {
   osm: {
     id: 'osm',
@@ -129,7 +135,7 @@ export const MAP_LAYERS = {
   nasaGibsTrueColor: {
     id: 'nasaGibsTrueColor',
     name: 'NASA GIBS Daily True-Color',
-    url: 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg',
+    get url() { return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/${getYesterdayString()}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`; },
     attribution: 'Imagery &copy; NASA EOSDIS GIBS',
     maxNativeZoom: 9,
     maxZoom: 18,
@@ -138,7 +144,7 @@ export const MAP_LAYERS = {
   nasaGibsPrecipitation: {
     id: 'nasaGibsPrecipitation',
     name: 'NASA GPM IMERG Precipitation Rate',
-    url: 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/IMERG_Precipitation_Rate/default/default/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png',
+    get url() { return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/IMERG_Precipitation_Rate/default/default/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png`; },
     attribution: 'Precipitation &copy; NASA GPM IMERG / GIBS',
     maxNativeZoom: 6,
     maxZoom: 18,
@@ -147,7 +153,7 @@ export const MAP_LAYERS = {
   sentinel2: {
     id: 'sentinel2',
     name: 'NASA GIBS Daily Earth Obs',
-    url: 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg',
+    get url() { return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/${getYesterdayString()}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`; },
     attribution: 'Imagery &copy; NASA EOSDIS GIBS',
     maxNativeZoom: 9,
     maxZoom: 18,

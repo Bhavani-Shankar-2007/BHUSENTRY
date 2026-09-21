@@ -6,6 +6,12 @@
   html {
     scroll-behavior: smooth;
   }
+  body {
+    @apply bg-slate-50 text-slate-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-black text-slate-100;
+  }
 }
 
 /* Leaflet Container Default Dimensions */
@@ -14,6 +20,24 @@
   height: 100%;
   border-radius: 0.75rem;
   z-index: 10;
+}
+
+/* Leaflet Popup Dark Mode */
+.dark .leaflet-popup-content-wrapper,
+.dark .leaflet-popup-tip {
+  background-color: #0A0A0A;
+  color: #F8FAFC;
+  border: 1px solid #262626;
+}
+.dark .leaflet-popup-content-wrapper h4 {
+  color: #F8FAFC !important;
+}
+.dark .leaflet-popup-content-wrapper p,
+.dark .leaflet-popup-content-wrapper span:not([class*="text-sky"]):not([class*="text-emerald"]):not([class*="bg-"]) {
+  color: #CBD5E1 !important;
+}
+.dark .custom-leaflet-popup .border-b {
+  border-color: #334155;
 }
 
 /* Custom Pulse Effects for High/Very High Risk Map Markers */
@@ -53,8 +77,8 @@
 
 /* Subtle Topographic Contour Background Effect */
 .bg-contour-pattern {
-  background-color: #0F172A;
-  background-image: radial-gradient(#14532D 0.75px, transparent 0.75px), radial-gradient(#0284C7 0.75px, #0F172A 0.75px);
+  background-color: #000000;
+  background-image: radial-gradient(#052e16 0.75px, transparent 0.75px), radial-gradient(#0c4a6e 0.75px, #000000 0.75px);
   background-size: 30px 30px;
   background-position: 0 0, 15px 15px;
 }

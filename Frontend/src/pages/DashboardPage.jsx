@@ -32,9 +32,11 @@ import {
 } from '../data/mockAnalytics';
 import { AIAssistantDrawer } from '../components/common/AIAssistantDrawer';
 import { MOCK_ENVIRONMENTAL_METRICS } from '../services/mockData';
+import { useTranslation } from 'react-i18next';
 
 export const DashboardPage = () => {
   const { activeRegion, currentRegionMeta, filterLocationsByRegion } = useRegion();
+  const { t } = useTranslation();
   const [locations, setLocations] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [selectedLoc, setSelectedLoc] = useState(null);
@@ -126,15 +128,15 @@ export const DashboardPage = () => {
 
   const summaryCards = [
     {
-      title: 'Monitored Locations',
+      title: t('locations'),
       value: regionalLocations.length || (currentRegionMeta.isPrimary ? 12 : locations.length),
-      unit: 'Active Stations',
+      unit: t('active_stations'),
       sub: currentRegionMeta.isPrimary ? 'Across 8 NER States' : `Scope: ${currentRegionMeta.shortName}`,
       icon: MapPin,
       iconBg: 'bg-emerald-50 text-emerald-700 border-emerald-200'
     },
     {
-      title: 'Low Risk',
+      title: t('low_risk'),
       value: lowCount,
       unit: 'Zones',
       sub: 'Stable gradient & soil',
@@ -142,7 +144,7 @@ export const DashboardPage = () => {
       iconBg: 'bg-green-50 text-green-700 border-green-200'
     },
     {
-      title: 'Moderate Risk',
+      title: t('moderate_risk'),
       value: moderateCount,
       unit: 'Zones',
       sub: 'Surveillance active',
@@ -150,7 +152,7 @@ export const DashboardPage = () => {
       iconBg: 'bg-amber-50 text-amber-700 border-amber-200'
     },
     {
-      title: 'High Risk',
+      title: t('high_risk'),
       value: highCount,
       unit: 'Zones',
       sub: 'Precipitation watch',
@@ -158,7 +160,7 @@ export const DashboardPage = () => {
       iconBg: 'bg-orange-50 text-orange-700 border-orange-200'
     },
     {
-      title: 'Very High Risk',
+      title: t('very_high_risk'),
       value: veryHighCount,
       unit: 'Zones',
       sub: 'Immediate action threshold',
@@ -166,7 +168,7 @@ export const DashboardPage = () => {
       iconBg: 'bg-red-50 text-red-700 border-red-200'
     },
     {
-      title: 'Active Alerts',
+      title: t('alerts'),
       value: regionalAlerts.filter((a) => a.status === 'Active').length || regionalAlerts.length,
       unit: 'Immediate',
       sub: 'Disaster cells alerted',
@@ -181,8 +183,8 @@ export const DashboardPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200/80">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Landslide Hazard Monitoring Dashboard
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              {t('title')}
             </h1>
             <span className="hidden md:inline-flex px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
               {currentRegionMeta.shortName} Realtime
@@ -215,17 +217,17 @@ export const DashboardPage = () => {
         {summaryCards.map((card, idx) => (
           <div
             key={idx}
-            className="bg-white rounded-xl p-4 border border-slate-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between"
+            className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="text-xs font-semibold text-slate-600">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
                   {card.title}
                 </span>
                 {card.riskText && <RiskBadge level={card.riskText} size="sm" dotOnly />}
               </div>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-2xl sm:text-3xl font-black text-slate-900">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
                   {card.value}
                 </span>
                 <span className="text-[11px] font-semibold text-slate-400 uppercase">
@@ -246,7 +248,7 @@ export const DashboardPage = () => {
         <div className="lg:col-span-2 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <h2 className="font-bold text-slate-800 text-base">
+              <h2 className="font-bold text-slate-800 dark:text-slate-100 text-base">
                 Interactive Geospatial Monitoring ({currentRegionMeta.shortName})
               </h2>
               <span className="text-xs text-slate-400 font-mono">{regionalLocations.length} Active Stations</span>
@@ -269,7 +271,7 @@ export const DashboardPage = () => {
         <div className="space-y-3 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <h2 className="font-bold text-slate-800 text-base">Station Telemetry</h2>
+              <h2 className="font-bold text-slate-800 dark:text-slate-100 text-base">Station Telemetry</h2>
               {selectedLoc && <RiskBadge level={selectedLoc.risk_level} size="sm" />}
             </div>
 
@@ -277,7 +279,7 @@ export const DashboardPage = () => {
               <Card className="h-full">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 leading-snug">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug">
                       {selectedLoc.name}
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
@@ -286,12 +288,12 @@ export const DashboardPage = () => {
                   </div>
 
                   {/* AI Risk Meter Score Preview */}
-                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/50 flex items-center justify-between">
                     <div>
                       <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
                         AI Predicted Risk Index
                       </span>
-                      <div className="text-2xl font-black text-slate-900 mt-0.5">
+                      <div className="text-2xl font-black text-slate-900 dark:text-slate-100 mt-0.5">
                         {selectedLoc.risk_score || selectedLoc.current_risk_score} <span className="text-xs font-normal text-slate-500">/ 1.00</span>
                       </div>
                     </div>
@@ -300,27 +302,27 @@ export const DashboardPage = () => {
 
                   {/* Telemetry Metrics */}
                   <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2.5 rounded-lg bg-sky-50/50 border border-sky-100">
-                      <span className="text-[11px] text-sky-800 font-medium block">24h Rainfall</span>
-                      <span className="font-bold text-slate-900 text-sm">{selectedLoc.rainfall || '94.2'} mm</span>
+                    <div className="p-2.5 rounded-lg bg-sky-50/50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/30">
+                      <span className="text-[11px] text-sky-800 dark:text-sky-300 font-medium block">24h Rainfall</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">{selectedLoc.rainfall || '94.2'} mm</span>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-100">
-                      <span className="text-[11px] text-emerald-800 font-medium block">Slope Angle</span>
-                      <span className="font-bold text-slate-900 text-sm">{selectedLoc.slope || '32.0'}° Deg</span>
+                    <div className="p-2.5 rounded-lg bg-emerald-50/50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30">
+                      <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-medium block">Slope Angle</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">{selectedLoc.slope || '32.0'}° Deg</span>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                    <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
                       <span className="text-[11px] text-slate-500 font-medium block">Elevation</span>
-                      <span className="font-bold text-slate-900 text-sm">{selectedLoc.elevation || '1420'} m</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">{selectedLoc.elevation || '1420'} m</span>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                    <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
                       <span className="text-[11px] text-slate-500 font-medium block">Last Updated</span>
-                      <span className="font-bold text-slate-900 text-sm">{selectedLoc.last_updated || 'Live Stream'}</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">{selectedLoc.last_updated || 'Live Stream'}</span>
                     </div>
                   </div>
 
-                  <div className="text-xs text-slate-600 space-y-1.5 border-t border-slate-100 pt-3">
-                    <p><span className="font-semibold text-slate-700">Soil:</span> {selectedLoc.soil_type || 'Residual Metamorphic'}</p>
-                    <p><span className="font-semibold text-slate-700">Cover:</span> {selectedLoc.land_cover || 'Vegetated Escarpment'}</p>
+                  <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 border-t border-slate-100 dark:border-slate-800 pt-3">
+                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">Soil:</span> {selectedLoc.soil_type || 'Residual Metamorphic'}</p>
+                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">Cover:</span> {selectedLoc.land_cover || 'Vegetated Escarpment'}</p>
                   </div>
 
                   <Link to={`/locations/${selectedLoc.id}`} className="block pt-2">
@@ -332,7 +334,7 @@ export const DashboardPage = () => {
                 </div>
               </Card>
             ) : (
-              <div className="p-8 text-center text-slate-400 bg-white rounded-xl border border-slate-200">
+              <div className="p-8 text-center text-slate-400 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
                 Click any marker on the map to inspect telemetry.
               </div>
             )}

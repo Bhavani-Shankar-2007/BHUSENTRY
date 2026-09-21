@@ -3,21 +3,21 @@ import { X, Send, Sparkles, Bot, User, Zap } from 'lucide-react';
 import { aiService } from '../../services/aiService';
 
 /**
- * AI Risk Explainer chat drawer – powered by xAI Grok.
+ * AI Risk Explainer chat drawer.
  */
 export const AIAssistantDrawer = ({ open, onClose, locationName = 'Selected Location', riskScore = 0.75 }) => {
   const [messages, setMessages] = useState([
     {
       id: 0,
       role: 'assistant',
-      content: `Hello. I am the BHUSENTRY AI Copilot powered by xAI Grok. Ask me about slope stability, live weather & monsoon risks, rainfall saturation, or emergency protocols for ${locationName}.`,
+      content: `Hello. I am the BHUSENTRY AI Copilot. Ask me about slope stability, live weather & monsoon risks, rainfall saturation, or emergency protocols for ${locationName}.`,
     },
   ]);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef(null);
 
-  // Quick prompt chips powered by Grok
+  // Quick prompt chips
   const quickPrompts = [
     { label: '🌧️ Live Weather Risk', prompt: `What is the current monsoon and weather risk at ${locationName}?` },
     { label: '💧 Rainfall Impact', prompt: `How does current 24h rainfall affect slope saturation and pore pressure at ${locationName}?` },
@@ -78,7 +78,7 @@ export const AIAssistantDrawer = ({ open, onClose, locationName = 'Selected Loca
               <h3 className="font-bold text-white text-sm tracking-tight">BHUSENTRY AI Copilot</h3>
               <p className="text-[10px] text-emerald-400/80 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
-                Powered by xAI Grok · Live Intelligence
+                Live Intelligence
               </p>
             </div>
           </div>
@@ -153,7 +153,7 @@ export const AIAssistantDrawer = ({ open, onClose, locationName = 'Selected Loca
                   <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                   <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </span>
-                Grok analyzing…
+                AI analyzing…
               </div>
             </div>
           )}

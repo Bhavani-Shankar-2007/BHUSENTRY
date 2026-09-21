@@ -1,7 +1,7 @@
 from typing import Dict, Any, List
 from datetime import datetime, timezone, timedelta
 from app.integrations.open_meteo import open_meteo_client
-from app.integrations.grok import grok_client
+from app.integrations.gemini import gemini_client
 from app.services.location_service import location_service
 from app.core.logging import logger
 
@@ -28,17 +28,17 @@ class WeatherService:
                 "probability_of_precipitation": round(min(1.0, 0.70 + (i % 3) * 0.1), 2)
             })
 
-        # Grok AI meteorological intelligence
+        # AI meteorological intelligence
         grok_analysis = None
         try:
-            grok_analysis = await grok_client.get_weather_insights(
+            grok_analysis = await gemini_client.get_weather_insights(
                 location_name=location_name,
                 lat=lat,
                 lon=lon,
                 weather_telemetry=weather_data
             )
         except Exception as e:
-            logger.warning(f"Grok weather insights failed for {location_id}: {e}")
+            logger.warning(f"AI weather insights failed for {location_id}: {e}")
 
         return {
             "location_id": location_id,

@@ -42,7 +42,7 @@ export const DashboardLayout = () => {
   // Loading state while Supabase restores session or PKCE token exchange completes
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC] dark:bg-black">
         <div className="w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mb-3" />
         <p className="text-sm font-medium text-slate-600">Verifying session…</p>
       </div>
@@ -56,7 +56,7 @@ export const DashboardLayout = () => {
     (user.profile_complete !== true || sessionStorage.getItem('bhusentry_signup_intent') === '1')
   ) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC] dark:bg-black">
         <div className="w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mb-3" />
         <p className="text-sm font-medium text-slate-600">Opening profile setup…</p>
       </div>
@@ -69,7 +69,7 @@ export const DashboardLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-black flex">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex-1 flex flex-col min-w-0 lg:pl-64">

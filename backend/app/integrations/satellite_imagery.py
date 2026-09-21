@@ -33,15 +33,15 @@ class FreeSatelliteImageryClient:
 
     def generate_nasa_gibs_tile_url(self, lat: float, lon: float) -> str:
         """
-        Generates NASA GIBS VIIRS/MODIS daily earth observation reference tile snapshot
+        Generates NASA GIBS MODIS/VIIRS daily earth observation reference tile snapshot
         """
-        return f"https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&LAYERS=VIIRS_SNPP_CorrectedReflectance_TrueColor&VERSION=1.3.0&FORMAT=image/jpeg&CRS=EPSG:4326&BBOX={lat-0.5},{lon-0.5},{lat+0.5},{lon+0.5}&WIDTH=512&HEIGHT=512"
+        return f"https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&VERSION=1.1.1&FORMAT=image/jpeg&SRS=EPSG:4326&BBOX={lon-0.5},{lat-0.5},{lon+0.5},{lat+0.5}&WIDTH=512&HEIGHT=512"
 
     def generate_nasa_precipitation_url(self, lat: float, lon: float) -> str:
         """
         Generates NASA GPM IMERG satellite precipitation rate tile snapshot
         """
-        return f"https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&LAYERS=IMERG_Precipitation_Rate&VERSION=1.3.0&FORMAT=image/png&TRANSPARENT=TRUE&CRS=EPSG:4326&BBOX={lat-0.5},{lon-0.5},{lat+0.5},{lon+0.5}&WIDTH=512&HEIGHT=512"
+        return f"https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&LAYERS=IMERG_Precipitation_Rate&VERSION=1.1.1&FORMAT=image/png&TRANSPARENT=TRUE&SRS=EPSG:4326&BBOX={lon-0.5},{lat-0.5},{lon+0.5},{lat+0.5}&WIDTH=512&HEIGHT=512"
 
     async def get_indices(self, lat: float, lon: float) -> Dict[str, Any]:
         """

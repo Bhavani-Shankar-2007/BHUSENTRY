@@ -15,11 +15,15 @@ import { useAlerts } from '../../context/AlertContext';
 import { useRegion } from '../../context/RegionContext';
 import { RiskBadge } from '../common/RiskBadge';
 import { RegionScopeSelector } from '../common/RegionScopeSelector';
+import { ThemeToggle } from '../common/ThemeToggle';
+import { LanguageSwitcher } from '../common/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export const Topbar = ({ onToggleSidebar }) => {
   const { user, logout, switchRole, isDemoMode } = useAuth();
   const { alerts, activeAlertCount } = useAlerts();
   const { currentRegionMeta } = useRegion();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [showNotifications, setShowNotifications] = useState(false);
@@ -62,12 +66,12 @@ export const Topbar = ({ onToggleSidebar }) => {
     `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'U')}&background=14532D&color=fff`;
 
   return (
-    <header className="sticky top-0 z-30 h-18 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between shadow-2xs">
+    <header className="sticky top-0 z-30 h-18 bg-white/95 dark:bg-black/95 backdrop-blur-md border-b border-slate-200/80 dark:border-zinc-800/80 px-4 sm:px-6 flex items-center justify-between shadow-2xs transition-colors">
       {/* Left */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+          className="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           aria-label="Toggle menu"
         >
           <Menu className="w-5 h-5" />
@@ -76,19 +80,19 @@ export const Topbar = ({ onToggleSidebar }) => {
         {activeAlertCount > 0 ? (
           <div
             onClick={() => navigate('/alerts')}
-            className="cursor-pointer hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-semibold hover:bg-red-100 transition-colors"
+            className="cursor-pointer hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 text-red-700 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600" />
             </span>
-            <span>{activeAlertCount} Critical Warnings ({currentRegionMeta.shortName})</span>
-            <AlertTriangle className="w-3.5 h-3.5 text-red-600 shrink-0" />
+            <span>{activeAlertCount} {t('critical_warnings')} ({currentRegionMeta.shortName})</span>
+            <AlertTriangle className="w-3.5 h-3.5 text-red-600 dark:text-red-500 shrink-0" />
           </div>
         ) : (
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-400 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>{currentRegionMeta.shortName}: Surveillance Active</span>
+            <span>{currentRegionMeta.shortName}: {t('surveillance_active')}</span>
           </div>
         )}
 
@@ -106,14 +110,19 @@ export const Topbar = ({ onToggleSidebar }) => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search stations, East Sikkim, Sohra, Aizawl..."
-            className="w-full pl-10 pr-4 py-2 bg-slate-100/80 hover:bg-slate-100 focus:bg-white border border-transparent focus:border-emerald-500 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
+            placeholder={t('search_placeholder')}
+            className="w-full pl-10 pr-4 py-2 bg-slate-100/80 dark:bg-zinc-900/80 hover:bg-slate-100 dark:hover:bg-zinc-900 focus:bg-white dark:focus:bg-black border border-transparent focus:border-emerald-500 dark:focus:border-emerald-600 rounded-xl text-xs sm:text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
           />
         </form>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-2.5 sm:gap-4">
+        <ThemeToggle />
+        <div className="hidden sm:block">
+          <LanguageSwitcher />
+        </div>
+        
         {/* Notifications */}
         <div className="relative" ref={notifRef}>
           <button
@@ -130,10 +139,10 @@ export const Topbar = ({ onToggleSidebar }) => {
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200 py-3 z-50">
-              <div className="px-4 pb-2 border-b border-slate-100 flex items-center justify-between">
+            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-zinc-950 rounded-2xl shadow-xl border border-slate-200 dark:border-zinc-800 py-3 z-50">
+              <div className="px-4 pb-2 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-slate-800 text-sm">Disaster Alerts Feed</h4>
+                  <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm">Disaster Alerts Feed</h4>
                   <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold">
                     {activeAlertCount} Active
                   </span>
@@ -149,9 +158,9 @@ export const Topbar = ({ onToggleSidebar }) => {
                 </button>
               </div>
 
-              <div className="max-h-72 overflow-y-auto divide-y divide-slate-100">
+              <div className="max-h-72 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
                 {activeAlerts.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-slate-500">
+                  <div className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
                     No active critical landslide warnings at this time.
                   </div>
                 ) : (
@@ -162,16 +171,16 @@ export const Topbar = ({ onToggleSidebar }) => {
                         setShowNotifications(false);
                         navigate('/alerts');
                       }}
-                      className="p-3.5 hover:bg-slate-50 cursor-pointer transition-colors"
+                      className="p-3.5 hover:bg-slate-50 dark:hover:bg-zinc-900 cursor-pointer transition-colors"
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold text-xs text-slate-900 truncate">
+                        <span className="font-semibold text-xs text-slate-900 dark:text-slate-100 truncate">
                           {alert.location_name}
                         </span>
                         <RiskBadge level={alert.risk_level} size="sm" />
                       </div>
-                      <p className="text-xs text-slate-600 mt-1 line-clamp-2">{alert.message}</p>
-                      <span className="text-[10px] text-slate-400 mt-1 block">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 line-clamp-2">{alert.message}</p>
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 block">
                         {alert.created_time} • {alert.state}
                       </span>
                     </div>
@@ -226,10 +235,10 @@ export const Topbar = ({ onToggleSidebar }) => {
           </button>
 
           {showProfileMenu && (
-            <div className="absolute right-0 mt-2 w-60 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50">
-              <div className="px-4 py-2.5 border-b border-slate-100">
-                <p className="text-xs font-bold text-slate-900">{user?.name}</p>
-                <p className="text-[11px] text-slate-500 truncate">{user?.email}</p>
+            <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-zinc-950 rounded-2xl shadow-xl border border-slate-200 dark:border-zinc-800 py-2 z-50">
+              <div className="px-4 py-2.5 border-b border-slate-100 dark:border-zinc-800">
+                <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{user?.name}</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{user?.email}</p>
                 <div className="mt-1.5 inline-block text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
                   {user?.badge || `${user?.role || 'User'} Access`}
                 </div>
@@ -267,9 +276,9 @@ export const Topbar = ({ onToggleSidebar }) => {
                     setShowProfileMenu(false);
                     navigate('/dashboard');
                   }}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors"
                 >
-                  <Layers className="w-4 h-4 text-slate-400" />
+                  <Layers className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                   <span>Monitoring Dashboard</span>
                 </button>
                 <button
@@ -277,14 +286,14 @@ export const Topbar = ({ onToggleSidebar }) => {
                     setShowProfileMenu(false);
                     navigate('/');
                   }}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors"
                 >
-                  <ExternalLink className="w-4 h-4 text-slate-400" />
+                  <ExternalLink className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                   <span>Public Landing Page</span>
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
                 >
                   <LogOut className="w-4 h-4 text-red-500" />
                   <span>Sign Out</span>

@@ -12,8 +12,12 @@ import {
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
+import { ThemeToggle } from '../components/common/ThemeToggle';
+import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
 
 export const LoginPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {
     login,
@@ -137,7 +141,12 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-black flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-300">
+      <div className="absolute top-4 right-4 flex items-center gap-2 z-50">
+        <LanguageSwitcher />
+        <ThemeToggle />
+      </div>
+
       {/* Background Decorative Blur Gradients */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#14532D_1px,transparent_1px)] [background-size:16px_16px]" />
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none" />
@@ -152,9 +161,9 @@ export const LoginPage = () => {
             className="w-16 h-16 sm:w-20 sm:h-20 object-contain group-hover:scale-105 transition-transform"
           />
           <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">BHUSENTRY</h2>
-            <p className="mt-1 text-xs text-slate-500 font-medium">
-              AI-Powered Landslide Early Warning Gateway
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">BHUSENTRY</h2>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 font-medium">
+              {t('login_subtitle', 'AI-Powered Landslide Early Warning Gateway')}
             </p>
           </div>
         </Link>
@@ -162,11 +171,11 @@ export const LoginPage = () => {
 
       {/* Card Container */}
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 relative z-10">
-        <div className="bg-white py-8 px-6 sm:px-10 rounded-2xl border border-slate-200/90 shadow-xl space-y-6">
+        <div className="bg-white dark:bg-[#0a0a0a] py-8 px-6 sm:px-10 rounded-2xl border border-slate-200/90 dark:border-zinc-800 shadow-xl space-y-6">
 
           {/* Mode Switcher Tabs */}
           {signupStep === 'email' && (
-            <div className="flex rounded-xl bg-slate-100 p-1">
+            <div className="flex rounded-xl bg-slate-100 dark:bg-zinc-900 p-1">
               <button
                 type="button"
                 onClick={() => {
@@ -175,10 +184,10 @@ export const LoginPage = () => {
                   clearMessages();
                 }}
                 className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
-                  mode === 'login' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                  mode === 'login' ? 'bg-white dark:bg-black text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
-                Sign In
+                {t('sign_in', 'Sign In')}
               </button>
               <button
                 type="button"
@@ -188,10 +197,10 @@ export const LoginPage = () => {
                   clearMessages();
                 }}
                 className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
-                  mode === 'signup' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                  mode === 'signup' ? 'bg-white dark:bg-black text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
-                Sign Up
+                {t('sign_up', 'Sign Up')}
               </button>
             </div>
           )}
@@ -215,7 +224,7 @@ export const LoginPage = () => {
             <>
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">Email Address</label>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">{t('email_address', 'Email Address')}</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
@@ -223,7 +232,7 @@ export const LoginPage = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="officer@bhusentry.gov.in"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#111] text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
                       autoComplete="email"
                       required
                     />
@@ -231,7 +240,7 @@ export const LoginPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">Password</label>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">{t('password', 'Password')}</label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
@@ -239,7 +248,7 @@ export const LoginPage = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
+                      className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#111] text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
                       autoComplete="current-password"
                       required
                     />
@@ -254,31 +263,31 @@ export const LoginPage = () => {
                 </div>
 
                 <div className="flex items-center justify-between text-xs">
-                  <label className="flex items-center gap-2 text-slate-600 cursor-pointer">
+                  <label className="flex items-center gap-2 text-slate-600 dark:text-slate-400 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
-                      className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                      className="rounded border-slate-300 dark:border-zinc-700 bg-white dark:bg-[#111] text-emerald-600 focus:ring-emerald-500"
                     />
-                    Remember me
+                    {t('remember_me', 'Remember me')}
                   </label>
-                  <button type="button" className="text-emerald-700 font-medium hover:underline">
-                    Forgot password?
+                  <button type="button" className="text-emerald-700 dark:text-emerald-500 font-medium hover:underline">
+                    {t('forgot_password', 'Forgot password?')}
                   </button>
                 </div>
 
                 <Button type="submit" className="w-full py-2.5 rounded-xl font-semibold tracking-wide text-sm" disabled={isLoading}>
-                  {isLoading ? 'Signing in…' : 'Sign In'}
+                  {isLoading ? t('signing_in', 'Signing in…') : t('sign_in', 'Sign In')}
                 </Button>
               </form>
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200" />
+                  <div className="w-full border-t border-slate-200 dark:border-zinc-800" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-3 bg-white text-slate-400 font-medium">Or continue with</span>
+                  <span className="px-3 bg-white dark:bg-[#0a0a0a] text-slate-400 font-medium">{t('or_continue_with', 'Or continue with')}</span>
                 </div>
               </div>
 
@@ -286,10 +295,10 @@ export const LoginPage = () => {
                 type="button"
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
-                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-sm font-semibold text-slate-700 transition-all disabled:opacity-60 shadow-sm"
+                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#111] hover:bg-slate-50 dark:hover:bg-zinc-900 text-sm font-semibold text-slate-700 dark:text-slate-200 transition-all disabled:opacity-60 shadow-sm"
               >
                 <GoogleIcon />
-                Continue with Google
+                {t('continue_with_google', 'Continue with Google')}
               </button>
             </>
           )}
@@ -298,12 +307,12 @@ export const LoginPage = () => {
           {mode === 'signup' && signupStep === 'email' && (
             <>
               <form onSubmit={handleSendOtp} className="space-y-4">
-                <p className="text-xs text-slate-500 text-center leading-relaxed">
-                  Enter your email address. We will send a <strong>6-digit verification code</strong> to set up your account.
+                <p className="text-xs text-slate-500 dark:text-slate-400 text-center leading-relaxed">
+                  {t('signup_email_msg', 'Enter your email address. We will send a 6-digit verification code to set up your account.')}
                 </p>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">Email Address</label>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">{t('email_address', 'Email Address')}</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
@@ -311,7 +320,7 @@ export const LoginPage = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="your.email@example.com"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#111] text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
                       autoComplete="email"
                       required
                     />
@@ -319,16 +328,16 @@ export const LoginPage = () => {
                 </div>
 
                 <Button type="submit" className="w-full py-2.5 rounded-xl font-semibold tracking-wide text-sm" disabled={isLoading}>
-                  {isLoading ? 'Sending code…' : 'Send verification code'}
+                  {isLoading ? t('sending_code', 'Sending code…') : t('send_verif_code', 'Send verification code')}
                 </Button>
               </form>
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200" />
+                  <div className="w-full border-t border-slate-200 dark:border-zinc-800" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-3 bg-white text-slate-400 font-medium">Or continue with</span>
+                  <span className="px-3 bg-white dark:bg-[#0a0a0a] text-slate-400 font-medium">{t('or_continue_with', 'Or continue with')}</span>
                 </div>
               </div>
 
@@ -336,10 +345,10 @@ export const LoginPage = () => {
                 type="button"
                 onClick={handleGoogleSignUp}
                 disabled={isLoading}
-                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-sm font-semibold text-slate-700 transition-all disabled:opacity-60 shadow-sm"
+                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#111] hover:bg-slate-50 dark:hover:bg-zinc-900 text-sm font-semibold text-slate-700 dark:text-slate-200 transition-all disabled:opacity-60 shadow-sm"
               >
                 <GoogleIcon />
-                Continue with Google
+                {t('continue_with_google', 'Continue with Google')}
               </button>
             </>
           )}
@@ -353,20 +362,20 @@ export const LoginPage = () => {
                   setSignupStep('email');
                   clearMessages();
                 }}
-                className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 transition-colors"
+                className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
               >
-                <ChevronLeft className="w-3.5 h-3.5" /> Back to email
+                <ChevronLeft className="w-3.5 h-3.5" /> {t('back_to_email', 'Back to email')}
               </button>
 
               <div className="text-center space-y-1">
-                <h3 className="text-sm font-bold text-slate-900">Check your inbox</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Enter the 6-digit code sent to <strong className="text-slate-800">{email}</strong>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{t('check_inbox', 'Check your inbox')}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  {t('enter_6_digit_code', 'Enter the 6-digit code sent to')} <strong className="text-slate-800 dark:text-slate-200">{email}</strong>
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1.5">6-Digit Code</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">{t('6_digit_code', '6-Digit Code')}</label>
                 <div className="relative">
                   <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
@@ -376,7 +385,7 @@ export const LoginPage = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/[^\d]/g, ''))}
                     placeholder="123456"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm tracking-widest font-mono text-center focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#111] text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 tracking-widest font-mono text-center focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all"
                     autoComplete="one-time-code"
                     required
                   />
@@ -384,7 +393,7 @@ export const LoginPage = () => {
               </div>
 
               <Button type="submit" className="w-full py-2.5 rounded-xl font-semibold tracking-wide text-sm" disabled={isLoading || otp.length < 6}>
-                {isLoading ? 'Verifying…' : 'Verify & Continue'}
+                {isLoading ? t('verifying', 'Verifying…') : t('verify_continue', 'Verify & Continue')}
               </Button>
 
               <div className="text-center pt-2">
@@ -392,9 +401,9 @@ export const LoginPage = () => {
                   type="button"
                   disabled={isLoading}
                   onClick={handleSendOtp}
-                  className="text-xs text-emerald-700 font-semibold hover:underline disabled:opacity-50"
+                  className="text-xs text-emerald-700 dark:text-emerald-500 font-semibold hover:underline disabled:opacity-50"
                 >
-                  Resend code
+                  {t('resend_code', 'Resend code')}
                 </button>
               </div>
             </form>
@@ -407,7 +416,7 @@ export const LoginPage = () => {
           )}
         </div>
 
-        <p className="mt-6 text-center text-xs text-slate-500 font-medium">BHUSENTRY • Nature talks. We listen.</p>
+        <p className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">{t('bhusentry_slogan', 'BHUSENTRY • Nature talks. We listen.')}</p>
       </div>
     </div>
   );

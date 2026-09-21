@@ -10,10 +10,12 @@ import { useRegion } from '../context/RegionContext';
 import { RegionScopeSelector } from '../components/common/RegionScopeSelector';
 import { Layers, Filter, Compass, AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '../components/common/Button';
+import { useTranslation } from 'react-i18next';
 
 export const RiskMapPage = () => {
   const [searchParams] = useSearchParams();
   const { activeRegion, currentRegionMeta, filterLocationsByRegion, availableStates } = useRegion();
+  const { t } = useTranslation();
   const [locations, setLocations] = useState([]);
   const [filteredLocations, setFilteredLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -96,11 +98,11 @@ export const RiskMapPage = () => {
   return (
     <div className="space-y-4">
       {/* Header & Scope Bar */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-2xs space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
                 {currentRegionMeta.shortName} Geospatial Hazard & Risk Map
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200">
@@ -138,7 +140,7 @@ export const RiskMapPage = () => {
               value={searchQuery}
               onChange={setSearchQuery}
               onClear={() => setSearchQuery('')}
-              placeholder={`Search stations in ${currentRegionMeta.shortName}...`}
+              placeholder={t('search_placeholder')}
             />
           </div>
 
@@ -147,7 +149,7 @@ export const RiskMapPage = () => {
             <select
               value={selectedState}
               onChange={(e) => setSelectedState(e.target.value)}
-              className="w-full py-2 px-3 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full py-2 px-3 bg-white dark:bg-black border border-slate-200 dark:border-zinc-800 rounded-lg text-xs sm:text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
               {availableStates.map((state) => (
                 <option key={state} value={state}>
@@ -162,7 +164,7 @@ export const RiskMapPage = () => {
             <select
               value={selectedRisk}
               onChange={(e) => setSelectedRisk(e.target.value)}
-              className="w-full py-2 px-3 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full py-2 px-3 bg-white dark:bg-black border border-slate-200 dark:border-zinc-800 rounded-lg text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
               {RISK_LEVELS.map((risk) => (
                 <option key={risk} value={risk}>

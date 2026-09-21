@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { RiskBadge } from '../common/RiskBadge';
-import { Droplets, Mountain, Compass, ArrowUpRight, Layers, Satellite, MountainSnow, Flame, CloudRain } from 'lucide-react';
+import { Droplets, Mountain, Compass, ArrowUpRight, Layers, Satellite, MountainSnow, Flame, CloudRain, Maximize, Minimize } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { MAP_LAYERS } from '../../services/mockData';
 
@@ -73,20 +73,40 @@ export const RiskMap = ({
     : defaultCenter;
 
   const currentZoom = selectedLocation ? 9 : defaultZoom;
+  const mapContainerRef = useRef(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      mapContainerRef.current.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   const baseLayer = MAP_LAYERS[activeBase] || MAP_LAYERS.osm;
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm" style={{ height }}>
+    <div ref={mapContainerRef} className={`relative rounded-2xl overflow-hidden border border-slate-200/90 dark:border-slate-800 shadow-sm ${isFullscreen ? 'bg-slate-900' : ''}`} style={{ height: isFullscreen ? '100vh' : height, width: isFullscreen ? '100vw' : '100%' }}>
       {/* Layer Toggle Controls */}
       {showLayerControls && (
         <div className="absolute top-3 left-3 z-[1000] flex flex-col gap-1.5">
-          <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-slate-200 shadow-lg p-1.5 flex flex-col gap-1">
+          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg p-1.5 flex flex-col gap-1">
             <button
               type="button"
               onClick={() => setActiveBase('osm')}
               className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeBase === 'osm' ? 'bg-emerald-100 text-emerald-900' : 'text-slate-600 hover:bg-slate-50'
+                activeBase === 'osm' ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-900 dark:text-emerald-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
               title="OpenStreetMap"
             >
@@ -96,7 +116,7 @@ export const RiskMap = ({
               type="button"
               onClick={() => setActiveBase('satellite')}
               className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeBase === 'satellite' ? 'bg-sky-100 text-sky-900' : 'text-slate-600 hover:bg-slate-50'
+                activeBase === 'satellite' ? 'bg-sky-100 dark:bg-sky-900/50 text-sky-900 dark:text-sky-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
               title="Satellite Imagery"
             >
@@ -106,7 +126,7 @@ export const RiskMap = ({
               type="button"
               onClick={() => setActiveBase('openTopo')}
               className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeBase === 'openTopo' ? 'bg-amber-100 text-amber-900' : 'text-slate-600 hover:bg-slate-50'
+                activeBase === 'openTopo' ? 'bg-amber-100 dark:bg-amber-900/50 text-amber-900 dark:text-amber-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
               title="OpenTopography Elevation"
             >
@@ -116,7 +136,7 @@ export const RiskMap = ({
               type="button"
               onClick={() => setShowGibsTrueColor((v) => !v)}
               className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                showGibsTrueColor ? 'bg-blue-100 text-blue-900 font-bold border border-blue-200' : 'text-slate-600 hover:bg-slate-50'
+                showGibsTrueColor ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-900 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
               title="NASA GIBS Daily Earth Observation True-Color"
             >
@@ -126,7 +146,7 @@ export const RiskMap = ({
               type="button"
               onClick={() => setShowNasaRain((v) => !v)}
               className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                showNasaRain ? 'bg-indigo-100 text-indigo-900 font-bold border border-indigo-200' : 'text-slate-600 hover:bg-slate-50'
+                showNasaRain ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-900 dark:text-indigo-300 font-bold border border-indigo-200 dark:border-indigo-800' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
               title="NASA GPM IMERG Real-Time Precipitation Rate"
             >
@@ -135,6 +155,17 @@ export const RiskMap = ({
           </div>
         </div>
       )}
+
+      {/* Fullscreen Toggle */}
+      <div className="absolute top-3 right-3 z-[1000]">
+        <button
+          onClick={toggleFullscreen}
+          className="p-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+          title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+        >
+          {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+        </button>
+      </div>
 
       <MapContainer
         center={defaultCenter}
@@ -157,6 +188,7 @@ export const RiskMap = ({
             attribution={MAP_LAYERS.nasaGibsTrueColor.attribution}
             url={MAP_LAYERS.nasaGibsTrueColor.url}
             maxNativeZoom={MAP_LAYERS.nasaGibsTrueColor.maxNativeZoom}
+            maxZoom={MAP_LAYERS.nasaGibsTrueColor.maxZoom || 18}
             opacity={MAP_LAYERS.nasaGibsTrueColor.opacity || 0.85}
           />
         )}
@@ -167,6 +199,7 @@ export const RiskMap = ({
             attribution={MAP_LAYERS.nasaGibsPrecipitation.attribution}
             url={MAP_LAYERS.nasaGibsPrecipitation.url}
             maxNativeZoom={MAP_LAYERS.nasaGibsPrecipitation.maxNativeZoom}
+            maxZoom={MAP_LAYERS.nasaGibsPrecipitation.maxZoom || 18}
             opacity={MAP_LAYERS.nasaGibsPrecipitation.opacity || 0.65}
           />
         )}
