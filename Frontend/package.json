@@ -11,6 +11,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
     "axios": "^1.7.9",
+    "cesium": "^1.145.0",
     "i18next": "^26.4.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.475.0",
@@ -19,7 +20,9 @@
     "react-i18next": "^17.0.14",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.29.0",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "resium": "^1.26.0",
+    "vite-plugin-cesium": "^1.2.23"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.16",

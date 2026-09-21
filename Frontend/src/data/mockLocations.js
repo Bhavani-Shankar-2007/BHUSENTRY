@@ -265,6 +265,70 @@ export const MOCK_LOCATIONS = [
     historical_events: [
       { year: 2020, severity: "Moderate", description: "Road cutting instability on Itanagar-Hollongi highway." }
     ]
+  },
+  {
+    id: 13,
+    name: "Munnar Tea Estates",
+    district: "Idukki",
+    state: "Kerala",
+    latitude: 10.0889,
+    longitude: 77.0595,
+    risk_level: "VERY HIGH",
+    risk_score: 0.88,
+    rainfall: 210.5,
+    elevation: 1532,
+    slope: 35.0,
+    soil_type: "Laterite",
+    land_cover: "Tea Plantation / Cleared Forest",
+    geology: "Precambrian Gneiss",
+    last_updated: "2 mins ago",
+    active_alert: true,
+    alert_message: "High risk of debris flow due to intense monsoon rains.",
+    historical_events: [
+      { year: 2018, severity: "Severe", description: "Massive landslides during Kerala floods." }
+    ]
+  },
+  {
+    id: 14,
+    name: "Joshimath Sinking Zone",
+    district: "Chamoli",
+    state: "Uttarakhand",
+    latitude: 30.5506,
+    longitude: 79.5660,
+    risk_level: "HIGH",
+    risk_score: 0.81,
+    rainfall: 45.0,
+    elevation: 1875,
+    slope: 28.5,
+    soil_type: "Glacial Moraine",
+    land_cover: "Urban Settlement",
+    geology: "Vaikrita Group",
+    last_updated: "10 mins ago",
+    active_alert: true,
+    alert_message: "Continuous land subsidence detected by satellite SAR.",
+    historical_events: [
+      { year: 2023, severity: "High", description: "Widespread structural cracks leading to evacuation." }
+    ]
+  },
+  {
+    id: 15,
+    name: "Mahabaleshwar Ghats",
+    district: "Satara",
+    state: "Maharashtra",
+    latitude: 17.9307,
+    longitude: 73.6477,
+    risk_level: "MODERATE",
+    risk_score: 0.55,
+    rainfall: 120.0,
+    elevation: 1353,
+    slope: 22.0,
+    soil_type: "Red Lateritic",
+    land_cover: "Dense Forest",
+    geology: "Deccan Traps Basalt",
+    last_updated: "1 hr ago",
+    active_alert: false,
+    alert_message: null,
+    historical_events: []
   }
 ];
 

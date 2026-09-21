@@ -18,6 +18,7 @@ import { AnalyticsPage } from './pages/AnalyticsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { CompleteProfilePage } from './pages/CompleteProfilePage';
 import { AdminPage } from './pages/AdminPage';
+import { SimulationPage } from './pages/SimulationPage';
 
 export const App = () => {
   return (
@@ -33,6 +34,7 @@ export const App = () => {
               <Route element={<DashboardLayout />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/map" element={<RiskMapPage />} />
+                <Route path="/simulation" element={<SimulationPage />} />
                 <Route path="/locations" element={<LocationsPage />} />
                 <Route path="/locations/:id" element={<LocationDetailPage />} />
                 <Route path="/predict" element={<AIPredictionPage />} />

@@ -8,6 +8,7 @@ import {
   Bell,
   BarChart3,
   Users,
+  Globe,
   X
 } from 'lucide-react';
 import { useAlerts } from '../../context/AlertContext';
@@ -22,6 +23,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
   const navItems = [
     { label: t('dashboard'), path: '/dashboard', icon: LayoutDashboard },
     { label: t('map'), path: '/map', icon: Map, badge: 'GIS' },
+    { label: '3D Simulation', path: '/simulation', icon: Globe, badge: 'NEW' },
     { label: t('locations'), path: '/locations', icon: MapPin },
     { label: t('predict'), path: '/predict', icon: Cpu, badge: 'AI' },
     {
